@@ -48,12 +48,5 @@
     "tiny-lr": "^0.1.0",
     "underscore": "^1.6.0",
     "vinyl-source-stream": "^0.1.1"
-  },
-  "todo": [
-    "Separate out the dev dependencies from the runtime dependencies.",
-    "Port to Bower.",
-    "Use Karma/Jasmine.",
-    "Move the repository and update the repository entry in this file.",
-    "Add ./dist/ to .gitignore"
-  ]
+  }
 }
