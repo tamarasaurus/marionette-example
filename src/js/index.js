@@ -27,26 +27,29 @@ var PeopleView = require('./views/collection/people');
 // PeopleCollection is the definition of a collection of people models - it groups together models/person
 var PeopleCollection = require('./collections/people');
 
-// PersonModel is the standards model for a person. We create three people and add them to the PeopleCollection
+// PersonModel is the standard model for a person. We create three people and add them to the PeopleCollection
 var PersonModel = require('./models/person');
 
 // This is a collection of PersonModels for each person
-var people = new PeopleCollection([
-    new PersonModel({
-        name: 'Tamara'
-    }),
-    new PersonModel({
-        name: 'Craig'
-    }),
-    new PersonModel({
-        name: 'Cameron'
-    })
+var peopleCollection = new PeopleCollection([
+	new PersonModel({
+		name: 'Tamara'
+	}),
+	new PersonModel({
+		name: 'Craig'
+	}),
+	new PersonModel({
+		name: 'Cameron'
+	})
 ]);
 
 // Here we initialise PeopleView which is a Marionette CollectionView and we pass in the 'people' collection
 var peopleView = new PeopleView({
-	collection: people
+	collection: peopleCollection
 });
+
+
+// @todo Make a controller that is responsible for these models and colections, set the router to render those views
 
 // This will render the CollectionView in the PersonList region that we specified earlier - e.g. div.main
 PersonList.show(peopleView);
