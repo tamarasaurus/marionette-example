@@ -37,7 +37,7 @@ var peopleCollection = new PeopleCollection([
 module.exports = Controller.extend({
 
   initialize: function() {
-    console.log('blah');
+
   },
 
   showPeople: function() {

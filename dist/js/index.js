@@ -7210,7 +7210,7 @@ var peopleCollection = new PeopleCollection([
 module.exports = Controller.extend({
 
   initialize: function() {
-    console.log('blah');
+
   },
 
   showPeople: function() {
@@ -7255,9 +7255,10 @@ module.exports = Router.extend({
     'show': 'showPeople'
   },
   routes: {
-    'test': 'test'
+    '': 'test'
   },
   test: function() {
+    $('body').text('This is a test wow');
     console.log('testing standard route function');
   }
 });

@@ -10,9 +10,10 @@ module.exports = Router.extend({
     'show': 'showPeople'
   },
   routes: {
-    'test': 'test'
+    '': 'test'
   },
   test: function() {
+    $('body').text('This is a test wow');
     console.log('testing standard route function');
   }
 });
