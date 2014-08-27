@@ -1,26 +1,37 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+// Set up the dependencies
 var Backbone = require('backbone');
 Backbone.$ = jQuery;
 require('backbone.marionette');
 
+// Start the application
 var App = new Backbone.Marionette.Application();
 
+// When the application starts, do this
 App.on('start', function() {
 	console.log('App start', this);
 });
 
+// Add an initializer to the app when it starts
 App.addInitializer(function(options) {
 	console.log('Add initializer: ', options, this);
 });
 
+// PersonList is the page region where the data will be rendered e.g. 'div.main'
 var PersonList = require('./regions/list');
+
+// PeopleView is the Marionette CollectionView that groups together the 'Person' ItemViews - it will render each individual ItemView from the collection that it receives
 var PeopleView = require('./views/collection/people');
+
+// PeopleCollection is the definition of a collection of people models - it groups together models/person
 var PeopleCollection = require('./collections/people');
+
+// PersonModel is the standards model for a person. We create three people and add them to the PeopleCollection
 var PersonModel = require('./models/person');
 
-
+// This is a collection of PersonModels for each person
 var people = new PeopleCollection([
     new PersonModel({
         name: 'Tamara'
@@ -33,12 +44,15 @@ var people = new PeopleCollection([
     })
 ]);
 
+// Here we initialise PeopleView which is a Marionette CollectionView and we pass in the 'people' collection
 var peopleView = new PeopleView({
 	collection: people
 });
 
+// This will render the CollectionView in the PersonList region that we specified earlier - e.g. div.main
 PersonList.show(peopleView);
 
+// Start the application
 App.start();
 },{"./collections/people":16,"./models/person":17,"./regions/list":18,"./views/collection/people":20,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
@@ -7182,6 +7196,7 @@ module.exports = require("handlebars/runtime")["default"];
 var Collection = require('backbone').Collection;
 var Person = require('../models/person');
 
+// This module defines a standards Backbone collection of people, when it's initialised with 'new' it accepts an array of Person instances e.g. new Person({name: 'Tamara'})
 module.exports = Collection.extend({
     model: Person
 });
@@ -7190,6 +7205,7 @@ module.exports = Collection.extend({
 
 var Model = require('backbone').Model;
 
+// This is the model for a person, it has a default value 'age'
 module.exports = Model.extend({
     defaults: {
         age: '24'
@@ -7200,6 +7216,8 @@ module.exports = Model.extend({
 
 var Region = require('backbone').Marionette.Region;
 
+
+// This module defines a region in the page where content will be rendered - it's a section for a list of people
 module.exports = new Region({
   el: '.main'
 });
@@ -7217,10 +7235,10 @@ module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(
 },{"hbsfy/runtime":15}],20:[function(require,module,exports){
 'use strict';
 
-// pass an array of models to the collectionview then render it in the region
 var CollectionView = require('backbone').Marionette.CollectionView;
 var PersonView = require('../item/person');
 
+// This is a CollectionView that renders each childView for the data passed in - in this case each item will be rendered as a person with PersonView
 module.exports = CollectionView.extend({
   childView: PersonView
 });
@@ -7230,6 +7248,7 @@ module.exports = CollectionView.extend({
 var ItemView = require('backbone').Marionette.ItemView;
 var template = require('../../templates/person.hbs');
 
+// This defines the model for a person, and sets a handlebar template for that model
 module.exports = ItemView.extend({
     template: template
 });
