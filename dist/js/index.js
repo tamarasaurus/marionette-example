@@ -8,6 +8,7 @@ require('backbone.marionette');
 
 // Start the application
 var App = new Backbone.Marionette.Application();
+var Router = require('./router.js');
 
 // When the application starts, do this
 App.on('start', function() {
@@ -17,47 +18,13 @@ App.on('start', function() {
 // Add an initializer to the app when it starts
 App.addInitializer(function(options) {
 	console.log('Add initializer: ', options, this);
+  new Router();
+  Backbone.history.start();
 });
-
-// PersonList is the page region where the data will be rendered e.g. 'div.main'
-var PersonList = require('./regions/list');
-
-// PeopleView is the Marionette CollectionView that groups together the 'Person' ItemViews - it will render each individual ItemView from the collection that it receives
-var PeopleView = require('./views/collection/people');
-
-// PeopleCollection is the definition of a collection of people models - it groups together models/person
-var PeopleCollection = require('./collections/people');
-
-// PersonModel is the standard model for a person. We create three people and add them to the PeopleCollection
-var PersonModel = require('./models/person');
-
-// This is a collection of PersonModels for each person
-var peopleCollection = new PeopleCollection([
-	new PersonModel({
-		name: 'Tamara'
-	}),
-	new PersonModel({
-		name: 'Craig'
-	}),
-	new PersonModel({
-		name: 'Cameron'
-	})
-]);
-
-// Here we initialise PeopleView which is a Marionette CollectionView and we pass in the 'people' collection
-var peopleView = new PeopleView({
-	collection: peopleCollection
-});
-
-
-// @todo Make a controller that is responsible for these models and colections, set the router to render those views
-
-// This will render the CollectionView in the PersonList region that we specified earlier - e.g. div.main
-PersonList.show(peopleView);
 
 // Start the application
 App.start();
-},{"./collections/people":16,"./models/person":17,"./regions/list":18,"./views/collection/people":20,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
+},{"./router.js":20,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.1.0
@@ -7203,7 +7170,58 @@ var Person = require('../models/person');
 module.exports = Collection.extend({
 	model: Person
 });
-},{"../models/person":17,"backbone":6}],17:[function(require,module,exports){
+},{"../models/person":18,"backbone":6}],17:[function(require,module,exports){
+'use strict';
+
+var Controller = require('backbone').Marionette.Controller;
+
+// PersonList is the page region where the data will be rendered e.g. 'div.main'
+var PersonList = require('../regions/list');
+
+// PeopleView is the Marionette CollectionView that groups together the 'Person' ItemViews - it will render each individual ItemView from the collection that it receives
+var PeopleView = require('../views/collection/people');
+
+// PeopleCollection is the definition of a collection of people models - it groups together models/person
+var PeopleCollection = require('../collections/people');
+
+// PersonModel is the standard model for a person. We create three people and add them to the PeopleCollection
+var PersonModel = require('../models/person');
+
+// This is a collection of PersonModels for each person
+var peopleCollection = new PeopleCollection([
+  new PersonModel({
+    name: 'Tamara'
+  }),
+  new PersonModel({
+    name: 'Craig'
+  }),
+  new PersonModel({
+    name: 'Cameron'
+  })
+]);
+
+// Here we initialise PeopleView which is a Marionette CollectionView and we pass in the 'people' collection
+
+// @todo Make a controller that is responsible for these models and colections, set the router to render those views
+
+// This will render the CollectionView in the PersonList region that we specified earlier - e.g. div.main
+
+
+module.exports = Controller.extend({
+
+  initialize: function() {
+    console.log('blah');
+  },
+
+  showPeople: function() {
+    var peopleView = new PeopleView({
+      collection: peopleCollection
+    });
+    PersonList.show(peopleView);
+  }
+
+});
+},{"../collections/people":16,"../models/person":18,"../regions/list":19,"../views/collection/people":22,"backbone":6}],18:[function(require,module,exports){
 'use strict';
 
 var Model = require('backbone').Model;
@@ -7214,7 +7232,7 @@ module.exports = Model.extend({
 		age: '24'
 	}
 });
-},{"backbone":6}],18:[function(require,module,exports){
+},{"backbone":6}],19:[function(require,module,exports){
 'use strict';
 
 var Region = require('backbone').Marionette.Region;
@@ -7224,7 +7242,28 @@ var Region = require('backbone').Marionette.Region;
 module.exports = new Region({
 	el: '.main'
 });
-},{"backbone":6}],19:[function(require,module,exports){
+},{"backbone":6}],20:[function(require,module,exports){
+'use strict';
+
+var Router = require('backbone').Marionette.AppRouter;
+var MainController = require('./controllers/main');
+var mainController = new MainController();
+
+module.exports = Router.extend({
+  controller: mainController,
+  appRoutes: {
+    'show': 'showPeople'
+  },
+  routes: {
+    'test': 'test'
+  },
+  test: function() {
+    console.log('testing standard route function');
+  }
+});
+
+
+},{"./controllers/main":17,"backbone":6}],21:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(depth0,helpers,partials,data) {
@@ -7234,7 +7273,7 @@ module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(
     + "</span>";
 },"useData":true});
 
-},{"hbsfy/runtime":15}],20:[function(require,module,exports){
+},{"hbsfy/runtime":15}],22:[function(require,module,exports){
 'use strict';
 
 var CollectionView = require('backbone').Marionette.CollectionView;
@@ -7244,7 +7283,7 @@ var PersonView = require('../item/person');
 module.exports = CollectionView.extend({
 	childView: PersonView
 });
-},{"../item/person":21,"backbone":6}],21:[function(require,module,exports){
+},{"../item/person":23,"backbone":6}],23:[function(require,module,exports){
 'use strict';
 
 var ItemView = require('backbone').Marionette.ItemView;
@@ -7254,4 +7293,4 @@ var template = require('../../templates/person.hbs');
 module.exports = ItemView.extend({
 	template: template
 });
-},{"../../templates/person.hbs":19,"backbone":6}]},{},[1]);
+},{"../../templates/person.hbs":21,"backbone":6}]},{},[1]);

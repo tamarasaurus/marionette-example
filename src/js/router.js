@@ -1,19 +1,19 @@
 'use strict';
 
-// var Router = require('backbone').Marionette.AppRouter;
+var Router = require('backbone').Marionette.AppRouter;
+var MainController = require('./controllers/main');
+var mainController = new MainController();
 
-// var MyRouter = Backbone.Marionette.AppRouter.extend({
-//   // "someMethod" must exist at controller.someMethod
-//   appRoutes: {
-//     "some/route": "someMethod"
-//   },
+module.exports = Router.extend({
+  controller: mainController,
+  appRoutes: {
+    'show': 'showPeople'
+  },
+  routes: {
+    'test': 'test'
+  },
+  test: function() {
+    console.log('testing standard route function');
+  }
+});
 
-//   /* standard routes can be mixed with appRoutes/Controllers above */
-//   routes : {
-//     "some/otherRoute" : "someOtherMethod"
-//   },
-//   someOtherMethod : function(){
-//     // do something here.
-//   }
-
-// });

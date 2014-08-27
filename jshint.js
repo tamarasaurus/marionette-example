@@ -8,7 +8,7 @@ module.exports = {
 	'regexp': true,
 	'strict': true,
 	'trailing': true,
-	'es3': true,
+	'es5': false,
 	'newcap': true,
 	'noempty': true,
 	'undef': true,
