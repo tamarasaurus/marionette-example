@@ -15,15 +15,32 @@ App.addInitializer(function(options) {
 	console.log('Add initializer: ', options, this);
 });
 
-var PersonItemView = require('./views/item/person');
 var PersonList = require('./regions/list');
+var PeopleView = require('./views/collection/people');
+var PeopleCollection = require('./collections/people');
+var PersonModel = require('./models/person');
 
 
-PersonList.show(new PersonItemView());
+var people = new PeopleCollection([
+    new PersonModel({
+        name: 'Tamara'
+    }),
+    new PersonModel({
+        name: 'Craig'
+    }),
+    new PersonModel({
+        name: 'Cameron'
+    })
+]);
 
+var peopleView = new PeopleView({
+	collection: people
+});
+
+PersonList.show(peopleView);
 
 App.start();
-},{"./regions/list":17,"./views/item/person":19,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
+},{"./collections/people":16,"./models/person":17,"./regions/list":18,"./views/collection/people":20,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.1.0
@@ -7162,6 +7179,15 @@ module.exports = require("handlebars/runtime")["default"];
 },{"handlebars/runtime":14}],16:[function(require,module,exports){
 'use strict';
 
+var Collection = require('backbone').Collection;
+var Person = require('../models/person');
+
+module.exports = Collection.extend({
+    model: Person
+});
+},{"../models/person":17,"backbone":6}],17:[function(require,module,exports){
+'use strict';
+
 var Model = require('backbone').Model;
 
 module.exports = Model.extend({
@@ -7169,7 +7195,7 @@ module.exports = Model.extend({
         age: '24'
     }
 });
-},{"backbone":6}],17:[function(require,module,exports){
+},{"backbone":6}],18:[function(require,module,exports){
 'use strict';
 
 var Region = require('backbone').Marionette.Region;
@@ -7178,7 +7204,7 @@ module.exports = new Region({
   el: '.main'
 });
 
-},{"backbone":6}],18:[function(require,module,exports){
+},{"backbone":6}],19:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(depth0,helpers,partials,data) {
@@ -7188,22 +7214,24 @@ module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(
     + "</span>";
 },"useData":true});
 
-},{"hbsfy/runtime":15}],19:[function(require,module,exports){
+},{"hbsfy/runtime":15}],20:[function(require,module,exports){
+'use strict';
+
+// pass an array of models to the collectionview then render it in the region
+var CollectionView = require('backbone').Marionette.CollectionView;
+var PersonView = require('../item/person');
+
+module.exports = CollectionView.extend({
+  childView: PersonView
+});
+},{"../item/person":21,"backbone":6}],21:[function(require,module,exports){
 'use strict';
 
 var ItemView = require('backbone').Marionette.ItemView;
 var template = require('../../templates/person.hbs');
-var PersonModel = require('../../models/person');
-
-var person = new PersonModel({
-    name: 'Tamara'
-});
-
-console.log(person);
 
 module.exports = ItemView.extend({
-    template: template,
-    model: person
+    template: template
 });
 
-},{"../../models/person":16,"../../templates/person.hbs":18,"backbone":6}]},{},[1]);
+},{"../../templates/person.hbs":19,"backbone":6}]},{},[1]);

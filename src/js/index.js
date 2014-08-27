@@ -14,11 +14,28 @@ App.addInitializer(function(options) {
 	console.log('Add initializer: ', options, this);
 });
 
-var PersonItemView = require('./views/item/person');
 var PersonList = require('./regions/list');
+var PeopleView = require('./views/collection/people');
+var PeopleCollection = require('./collections/people');
+var PersonModel = require('./models/person');
 
 
-PersonList.show(new PersonItemView());
+var people = new PeopleCollection([
+    new PersonModel({
+        name: 'Tamara'
+    }),
+    new PersonModel({
+        name: 'Craig'
+    }),
+    new PersonModel({
+        name: 'Cameron'
+    })
+]);
 
+var peopleView = new PeopleView({
+	collection: people
+});
+
+PersonList.show(peopleView);
 
 App.start();
