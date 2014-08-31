@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
-/* global jQuery */
+/* global jQuery, $ */
 
 // Set up the dependencies
 var Backbone = require('backbone');
@@ -21,8 +21,8 @@ App.on('start', function() {
 });
 
 // Example of an event binding to the nicknamer class
-nicknamer.on("nicknamer:hello", function(data) {
-  $('body').append('<strong>' + data.message + '</strong>')
+nicknamer.on('nicknamer:hello', function(data) {
+  $('body').append('<strong>' + data.message + '</strong>');
 });
 
 // Add an initializer to the app when it starts
@@ -7253,20 +7253,22 @@ module.exports = Module.extend({
   startWithParent: false,
 
   constructor: function(moduleName, app, options) {
-    console.log('construct: ', this);
+    console.log('construct: ', this, moduleName, app, options);
   },
 
   initialize: function(options, moduleName, app) {
-    console.log('initialise: ', this);
+    console.log('initialise: ', this, options, moduleName, app);
   },
   // To have custom start functions they can't be named' start'
   onStart: function(options) {
-    console.log('start: ', this);
-    this.trigger('nicknamer:hello', {message: 'Hello'});
+    console.log('start: ', this, options);
+    this.trigger('nicknamer:hello', {
+      message: 'Hello'
+    });
   },
 
   onStop: function(options) {
-    console.log('stop: ', this);
+    console.log('stop: ', this, options);
   },
 });
 

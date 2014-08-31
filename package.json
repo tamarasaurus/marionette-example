@@ -26,10 +26,11 @@
     "backbone-http": "^0.7.0",
     "backbone.marionette": "^2.1.0",
     "browserify": "^5.10.1",
+    "gulp-sass": "^0.7.3",
     "handlebars": "^2.0.0-alpha.4",
     "hbsfy": "^2.0.0",
-    "npm": "^1.4.24",
-    "install": "^0.1.7"
+    "install": "^0.1.7",
+    "npm": "^1.4.24"
   },
   "devDependencies": {
     "gulp": "^3.8.7",

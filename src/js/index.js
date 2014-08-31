@@ -1,5 +1,5 @@
 'use strict';
-/* global jQuery */
+/* global jQuery, $ */
 
 // Set up the dependencies
 var Backbone = require('backbone');
@@ -20,8 +20,8 @@ App.on('start', function() {
 });
 
 // Example of an event binding to the nicknamer class
-nicknamer.on("nicknamer:hello", function(data) {
-  $('body').append('<strong>' + data.message + '</strong>')
+nicknamer.on('nicknamer:hello', function(data) {
+  $('body').append('<strong>' + data.message + '</strong>');
 });
 
 // Add an initializer to the app when it starts
