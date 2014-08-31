@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
+/* global jQuery */
 
 // Set up the dependencies
 var Backbone = require('backbone');
@@ -8,23 +9,34 @@ require('backbone.marionette');
 
 // Start the application
 var App = new Backbone.Marionette.Application();
-var Router = require('./router.js');
+var Router = require('./router');
+var Nicknamer = require('./modules/nicknamer');
+
+var nicknamer = App.module('Nicknamer', Nicknamer);
+console.log(nicknamer);
 
 // When the application starts, do this
 App.on('start', function() {
-	console.log('App start', this);
+  console.log('App start', this);
+});
+
+// Example of an event binding to the nicknamer class
+nicknamer.on("nicknamer:hello", function(data) {
+  $('body').append('<strong>' + data.message + '</strong>')
 });
 
 // Add an initializer to the app when it starts
 App.addInitializer(function(options) {
-	console.log('Add initializer: ', options, this);
+  console.log('Add initializer: ', options, this);
   new Router();
   Backbone.history.start();
 });
 
 // Start the application
 App.start();
-},{"./router.js":20,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
+nicknamer.onStart();
+
+},{"./modules/nicknamer":19,"./router":21,"backbone":6,"backbone.marionette":2}],2:[function(require,module,exports){
 // MarionetteJS (Backbone.Marionette)
 // ----------------------------------
 // v2.1.0
@@ -7221,7 +7233,7 @@ module.exports = Controller.extend({
   }
 
 });
-},{"../collections/people":16,"../models/person":18,"../regions/list":19,"../views/collection/people":22,"backbone":6}],18:[function(require,module,exports){
+},{"../collections/people":16,"../models/person":18,"../regions/list":20,"../views/collection/people":23,"backbone":6}],18:[function(require,module,exports){
 'use strict';
 
 var Model = require('backbone').Model;
@@ -7235,6 +7247,32 @@ module.exports = Model.extend({
 },{"backbone":6}],19:[function(require,module,exports){
 'use strict';
 
+var Module = require('backbone').Marionette.Module;
+
+module.exports = Module.extend({
+  startWithParent: false,
+
+  constructor: function(moduleName, app, options) {
+    console.log('construct: ', this);
+  },
+
+  initialize: function(options, moduleName, app) {
+    console.log('initialise: ', this);
+  },
+  // To have custom start functions they can't be named' start'
+  onStart: function(options) {
+    console.log('start: ', this);
+    this.trigger('nicknamer:hello', {message: 'Hello'});
+  },
+
+  onStop: function(options) {
+    console.log('stop: ', this);
+  },
+});
+
+},{"backbone":6}],20:[function(require,module,exports){
+'use strict';
+
 var Region = require('backbone').Marionette.Region;
 
 
@@ -7242,7 +7280,7 @@ var Region = require('backbone').Marionette.Region;
 module.exports = new Region({
 	el: '.main'
 });
-},{"backbone":6}],20:[function(require,module,exports){
+},{"backbone":6}],21:[function(require,module,exports){
 'use strict';
 
 var Router = require('backbone').Marionette.AppRouter;
@@ -7264,7 +7302,7 @@ module.exports = Router.extend({
 });
 
 
-},{"./controllers/main":17,"backbone":6}],21:[function(require,module,exports){
+},{"./controllers/main":17,"backbone":6}],22:[function(require,module,exports){
 // hbsfy compiled Handlebars template
 var Handlebars = require('hbsfy/runtime');
 module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(depth0,helpers,partials,data) {
@@ -7274,7 +7312,7 @@ module.exports = Handlebars.template({"compiler":[5,">= 2.0.0"],"main":function(
     + "</span>";
 },"useData":true});
 
-},{"hbsfy/runtime":15}],22:[function(require,module,exports){
+},{"hbsfy/runtime":15}],23:[function(require,module,exports){
 'use strict';
 
 var CollectionView = require('backbone').Marionette.CollectionView;
@@ -7284,7 +7322,7 @@ var PersonView = require('../item/person');
 module.exports = CollectionView.extend({
 	childView: PersonView
 });
-},{"../item/person":23,"backbone":6}],23:[function(require,module,exports){
+},{"../item/person":24,"backbone":6}],24:[function(require,module,exports){
 'use strict';
 
 var ItemView = require('backbone').Marionette.ItemView;
@@ -7294,4 +7332,4 @@ var template = require('../../templates/person.hbs');
 module.exports = ItemView.extend({
 	template: template
 });
-},{"../../templates/person.hbs":21,"backbone":6}]},{},[1]);
+},{"../../templates/person.hbs":22,"backbone":6}]},{},[1]);
