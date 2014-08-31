@@ -13,8 +13,7 @@ module.exports = Router.extend({
     '': 'test'
   },
   test: function() {
-    $('body').text('This is a test wow');
+    $('body').append('<p>This is a test wow</p>');
     console.log('testing standard route function');
   }
 });
-
